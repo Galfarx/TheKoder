@@ -1,17 +1,16 @@
-import Phaser from 'phaser'
-import { centerGameObjects } from '../utils'
+import Phaser from 'phaser';
 
 export default class extends Phaser.State {
-  init () {}
+  init() {}
 
-  preload () {
+  preload() {
     //
     // load your assets
     //
   }
 
-  create () {
-    this.state.start('Game')
+  create() {
+    this.state.start('Game');
   }
 
 }
