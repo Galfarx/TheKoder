@@ -5,10 +5,9 @@
   "author": "Dominik Kubis <kubis.dominik1@gmail.com>",
   "main": "index.js",
   "scripts": {
-    "dev": "npm run watch &  webpack-dev-server",
-    "watch": "webpack",
-    "deploy": "webpack --config webpack.production.config.js",
-    "test": "standard"
+    "dev": "webpack &  webpack-dev-server",
+    "test": "webpack -w --config webpack.test.config.js",
+    "deploy": "webpack --config webpack.production.config.js"
   },
   "license": "",
   "devDependencies": {
@@ -28,7 +27,9 @@
     "expose-loader": "^0.7.1",
     "mocha": "^3.2.0",
     "webpack": "^2.2.0",
-    "webpack-dev-server": "^2.4.1"
+    "webpack-dev-server": "^2.4.1",
+    "webpack-node-externals": "^1.5.4",
+    "webpack-shell-plugin": "^0.5.0"
   },
   "dependencies": {
     "phaser-ce": "^2.7.3",
