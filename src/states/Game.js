@@ -7,7 +7,5 @@ export default class extends Phaser.State {
 
   create() {}
 
-  render() {
-    console.log('update')
-  }
+  render() {}
 }
