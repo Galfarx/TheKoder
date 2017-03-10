@@ -16,15 +16,16 @@ export default class extends Phaser.State {
     this.ground.body.immovable = true;
 
     this.player = new Mushroom({
-      game: this,
+      game: this.game,
       x: this.world.centerX,
       y: this.world.centerY,
-      asset: 'mushroom'
+      asset: 'player',
+      frame: 0
     });
+    this.player.animations.add('walking', [0, 4, 5, 0], 6, true);
+    this.game.add.existing(this.player);
     this.player.customParams = {};
     this.game.physics.arcade.enable(this.player);
-
-    this.game.add.existing(this.player);
   }
 
   render() {}
@@ -36,8 +37,10 @@ export default class extends Phaser.State {
 
     if (this.cursors.left.isDown || this.player.customParams.isMovingLeft) {
       this.player.body.velocity.x = -config.runningSpeed;
+      this.player.play('walking');
     } else if (this.cursors.right.isDown || this.player.customParams.isMovingRight) {
       this.player.body.velocity.x = config.runningSpeed;
+      this.player.play('walking');
     }
 
     if ((this.cursors.up.isDown || this.player.customParams.mustJump) && this.player.body.touching.down) {
