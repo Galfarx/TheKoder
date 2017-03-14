@@ -7,13 +7,14 @@ export default class extends Phaser.State {
   init() {
     this.cursors = this.game.input.keyboard.createCursorKeys();
   }
-  preload() {}
 
   create() {
-    this.ground = this.add.sprite(250, 350, 'ground');
-    this.game.physics.arcade.enable(this.ground);
-    this.ground.body.allowGravity = false;
-    this.ground.body.immovable = true;
+    this.map = this.add.tilemap('level1');
+
+    this.map.addTilesetImage('tiles_spritesheet', 'gameTiles');
+
+    this.backgroundLayer = this.map.createLayer('backgroundLayer');
+    this.collisionLayer = this.map.createLayer('collisionLayer');
 
     this.player = new Mushroom({
       game: this.game,
