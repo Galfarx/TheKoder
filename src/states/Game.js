@@ -16,49 +16,41 @@ export default class extends Phaser.State {
     this.backgroundLayer = this.map.createLayer('backgroundLayer');
     this.collisionLayer = this.map.createLayer('collisionLayer');
 
-    this.player = new Mushroom({
-      game: this.game,
-      x: this.world.centerX,
-      y: this.world.centerY,
-      asset: 'player',
-      frame: 0
-    });
+    this.game.world.sendToBack(this.backgroundLayer);
+
+    this.map.setCollisionBetween(0, 47, true, 'collisionLayer');
+
+    this.collisionLayer.resizeWorld();
+    this.player = this.add.sprite(this.world.centerX, this.world.centerY, 'player', 0);
     this.player.animations.add('walking', [0, 1, 2, 0], 12, false);
     this.player.animations.add('jump', [0, 4, 0], 1, false);
-    this.game.add.existing(this.player);
     this.player.customParams = {};
     this.game.physics.arcade.enable(this.player);
+    this.game.camera.follow(this.player);
   }
 
   render() {}
 
   update() {
-    this.game.physics.arcade.collide(this.player, this.ground);
+    this.game.physics.arcade.collide(this.player, this.collisionLayer);
 
     this.player.body.velocity.x = 0;
 
     if (this.cursors.left.isDown || this.player.customParams.isMovingLeft) {
-      this.player.body.velocity.x = -config.runningSpeed;
+      this.player.body.velocity.x = -this.RUNNING_SPEED;
       this.player.scale.setTo(-1, 1);
-      if (this.player.body.touching.down) this.player.play('walking');
-      if (!this.player.body.touching.down) this.playJumpAnimation();
+      this.player.play('walking');
     } else if (this.cursors.right.isDown || this.player.customParams.isMovingRight) {
-      this.player.body.velocity.x = config.runningSpeed;
+      this.player.body.velocity.x = this.RUNNING_SPEED;
       this.player.scale.setTo(1, 1);
-      if (this.player.body.touching.down) this.player.play('walking');
-      if (!this.player.body.touching.down) this.playJumpAnimation();
-    } else if (this.cursors.up.isDown) {
-      this.playJumpAnimation();
-    } else if (this.cursors.down.isDown) {
-      this.player.animations.stop();
-      this.player.frame = 3;
+      this.player.play('walking');
     } else {
       this.player.animations.stop();
-      this.player.frame = 0;
+      this.player.frame = 3;
     }
 
-    if ((this.cursors.up.isDown || this.player.customParams.mustJump) && this.player.body.touching.down) {
-      this.player.body.velocity.y = -config.jumpingSpeed;
+    if ((this.cursors.up.isDown || this.player.customParams.mustJump) && (this.player.body.blocked.down || this.player.body.touching.down)) {
+      this.player.body.velocity.y = -this.JUMPING_SPEED;
       this.player.customParams.mustJump = false;
     }
   }

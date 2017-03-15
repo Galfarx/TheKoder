@@ -3,9 +3,13 @@ import WebFont from 'webfontloader';
 
 export default class extends Phaser.State {
   init() {
-    this.stage.backgroundColor = '#EDEEC9';
     this.fontsReady = false;
     this.fontsLoaded = this.fontsLoaded.bind(this);
+
+    this.game.stage.backgroundColor = '#fff';
+    this.scale.scaleMode = Phaser.ScaleManager.SHOW_ALL;
+    this.scale.pageAlignHorizontally = true;
+    this.scale.pageAlignVertically = true;
 
     this.game.physics.startSystem(Phaser.Physics.ARCADE);
     this.game.physics.arcade.gravity.y = 1000;
