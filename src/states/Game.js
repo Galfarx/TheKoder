@@ -1,6 +1,7 @@
 /* globals __DEV__ */
 import Phaser from 'phaser';
 import config from '../config';
+import Player from '../sprites/Player';
 
 export default class extends Phaser.State {
   init() {
@@ -9,27 +10,23 @@ export default class extends Phaser.State {
 
   create() {
     this.map = this.add.tilemap('level1');
-
     this.map.addTilesetImage('tiles_spritesheet', 'gameTiles');
-
     this.backgroundLayer = this.map.createLayer('backgroundLayer');
     this.collisionLayer = this.map.createLayer('collisionLayer');
-
     this.game.world.sendToBack(this.backgroundLayer);
-
     this.map.setCollisionBetween(0, 47, true, 'collisionLayer');
-
     this.collisionLayer.resizeWorld();
 
-    this.player = this.add.sprite(this.world.centerX, this.world.centerY, 'player', 0);
-    this.player.animations.add('walking', [0, 1, 2, 0], 12, false);
-    this.player.customParams = {};
-    this.player.anchor.setTo(0.5);
-    this.game.physics.arcade.enable(this.player);
+    this.player = new Player({
+      game: this,
+      x: this.world.centerX,
+      y: this.world.centerY,
+      asset: 'player',
+      frame: 0,
+      health: 100
+    });
+    this.game.add.existing(this.player);
     this.game.camera.follow(this.player);
-    this.player.body.collideWorldBounds = true;
-    this.player.body.maxVelocity.setTo(config.maxSpeed, config.maxSpeed * 10);
-    this.player.body.drag.setTo(config.drag, 0);
 
     this.game.physics.arcade.gravity.y = config.gravity;
     this.game.physics.arcade.TILE_BIAS = 40;
@@ -46,7 +43,6 @@ export default class extends Phaser.State {
     }
 
     if (this.jumps > 0 && this.upInputIsActive(5)) {
-      this.playJumpAnimation();
       this.player.body.velocity.y = config.jumpSpeed;
       this.jumping = true;
     }
@@ -58,20 +54,13 @@ export default class extends Phaser.State {
 
     if (this.cursors.left.isDown) {
       this.player.scale.setTo(-1, 1);
-      this.player.play('walking');
       this.player.body.acceleration.x = -config.acceleration;
     } else if (this.cursors.right.isDown) {
       this.player.scale.setTo(1, 1);
-      this.player.play('walking');
       this.player.body.acceleration.x = config.acceleration;
     } else {
       this.player.body.acceleration.x = 0;
     }
-  }
-
-  playJumpAnimation() {
-    this.player.animations.stop();
-    this.player.frame = 4;
   }
 
   upInputReleased() {
