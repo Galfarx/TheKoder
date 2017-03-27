@@ -1,7 +1,7 @@
 import Phaser from 'phaser';
 
 import * as states from './states';
-import config from './config';
+import config from './config/config';
 
 export default class Game extends Phaser.Game {
 

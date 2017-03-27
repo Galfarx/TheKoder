@@ -1,6 +1,6 @@
 /* globals __DEV__ */
 import Phaser from 'phaser';
-import config from '../config';
+import config from '../config/config';
 import Player from '../sprites/Player';
 
 export default class extends Phaser.State {

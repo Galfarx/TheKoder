@@ -1,5 +1,5 @@
 import Phaser from 'phaser';
-import config from '../config';
+import config from '../config/config';
 
 export default class Player extends Phaser.Sprite {
 
