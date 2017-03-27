@@ -34,7 +34,10 @@ export default class extends Phaser.State {
 
   update() {
     this.game.physics.arcade.collide(this.player, this.collisionLayer);
+    this.movePlayer();
+  }
 
+  movePlayer() {
     const onTheGround = this.player.body.blocked.down;
 
     if (onTheGround) {
