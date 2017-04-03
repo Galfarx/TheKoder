@@ -2,6 +2,7 @@
 import Phaser from 'phaser';
 import config from '../config/config';
 import Player from '../sprites/Player';
+import getPlayerHighestPoing from '../logic/mesureHeight';
 
 export default class extends Phaser.State {
   init() {
@@ -19,8 +20,8 @@ export default class extends Phaser.State {
 
     this.player = new Player({
       game: this,
-      x: this.world.centerX,
-      y: this.world.centerY,
+      x: 120,
+      y: 6800,
       asset: 'player',
       frame: 0,
       health: 100
@@ -30,11 +31,13 @@ export default class extends Phaser.State {
 
     this.game.physics.arcade.gravity.y = config.gravity;
     this.game.physics.arcade.TILE_BIAS = 40;
+    this.playerHeight = 0;
   }
 
   update() {
     this.game.physics.arcade.collide(this.player, this.collisionLayer);
     this.movePlayer();
+    console.log(getPlayerHighestPoing(this.player.y, this.game.world.height));
   }
 
   movePlayer() {
