@@ -1,0 +1,8 @@
+{
+    "limits": [200, 600, 1000, 1500, 2500],
+    "200": "Junior Dev",
+    "600": "Regular Dev",
+    "1000": "Senior Dev",
+    "1500": "Principal Dev",
+    "2500": "Lead Dev"
+}

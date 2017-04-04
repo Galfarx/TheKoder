@@ -7,6 +7,7 @@ export default class extends Phaser.State {
     this.load.spritesheet('player', 'assets/images/player.png', 76, 100, 60, 1, 0);
     this.load.image('gameTiles', 'assets/images/sheet.png');
     this.load.tilemap('level1', 'assets/levels/demo-level.json', null, Phaser.Tilemap.TILED_JSON);
+    this.load.json('prizes', 'assets/data/prizes.json');
   }
 
   create() {

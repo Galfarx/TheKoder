@@ -2,7 +2,7 @@
 import Phaser from 'phaser';
 import config from '../config/config';
 import Player from '../sprites/Player';
-import getPlayerHighestPoing from '../logic/mesureHeight';
+import getPlayerHighestPoint from '../logic/mesureHeight';
 
 export default class extends Phaser.State {
   init() {
@@ -10,6 +10,7 @@ export default class extends Phaser.State {
   }
 
   create() {
+    this.prizeData = this.cache.getJSON('prizes');
     this.map = this.add.tilemap('level1');
     this.map.addTilesetImage('tiles_spritesheet', 'gameTiles');
     this.backgroundLayer = this.map.createLayer('backgroundLayer');
@@ -31,13 +32,15 @@ export default class extends Phaser.State {
 
     this.game.physics.arcade.gravity.y = config.gravity;
     this.game.physics.arcade.TILE_BIAS = 40;
-    this.playerHeight = 0;
+
+    this.gameLimits = Array.from(this.prizeData.limits);
+    this.reachedHeight = 0;
   }
 
   update() {
     this.game.physics.arcade.collide(this.player, this.collisionLayer);
     this.movePlayer();
-    console.log(getPlayerHighestPoing(this.player.y, this.game.world.height));
+    this.checkForPrize();
   }
 
   movePlayer() {
@@ -87,5 +90,14 @@ export default class extends Phaser.State {
               this.game.input.activePointer.x < (this.game.width / 2) + (this.game.width / 4));
 
     return isActive;
+  }
+
+  checkForPrize() {
+    const playerHeight = getPlayerHighestPoint(this.player.y, this.game.world.height);
+
+    if (playerHeight > this.reachedHeight) {
+      this.reachedHeight = this.gameLimits.shift();
+      console.log(this.prizeData[this.reachedHeight]);
+    }
   }
 }

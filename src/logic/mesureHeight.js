@@ -4,7 +4,7 @@ function calculateHeight(playerY, gameY) {
   return Math.abs(playerY - gameY);
 }
 
-export default function getPlayerHighestPoing(playerY, gameY) {
+export default function getPlayerHighestPoint(playerY, gameY) {
   let playerCurrentHeight = calculateHeight(playerY, gameY);
   if (highestReachedPoint < playerCurrentHeight) {
     highestReachedPoint = playerCurrentHeight;
