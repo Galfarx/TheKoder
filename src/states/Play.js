@@ -19,10 +19,12 @@ export default class extends Phaser.State {
     this.map.setCollisionBetween(0, 47, true, 'collisionLayer');
     this.collisionLayer.resizeWorld();
 
+    const playerArr = this.findObjectsByType('player', this.map, 'objectLayer');
+
     this.player = new Player({
       game: this,
-      x: 120,
-      y: 6800,
+      x: playerArr[0].x,
+      y: playerArr[0].y,
       asset: 'player',
       frame: 0,
       health: 100
@@ -99,5 +101,18 @@ export default class extends Phaser.State {
       this.reachedHeight = this.gameLimits.shift();
       console.log(this.prizeData[this.reachedHeight]);
     }
+  }
+
+  findObjectsByType(type, tilemap, layer) {
+    const result = [];
+
+    tilemap.objects[layer].forEach((element) => {
+      if (element.properties && element.properties.type === type) {
+        element.y -= tilemap.tileHeight;
+        result.push(element);
+      }
+    });
+
+    return result;
   }
 }
